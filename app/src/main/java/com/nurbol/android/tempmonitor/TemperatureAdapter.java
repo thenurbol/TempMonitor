@@ -115,12 +115,12 @@ public class TemperatureAdapter extends ArrayAdapter<Temperature> {
         }
 
         SimpleDateFormat fmtOut = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-        String dateTimeZone = fmtOut.format(dateReal);
+        String dateWithZone = fmtOut.format(dateReal);
 
         String date;
         String time;
 
-        String[] parts = dateTimeZone.split(DATE_SEPARATOR);
+        String[] parts = dateWithZone.split(DATE_SEPARATOR);
         date = parts[0];
         time = parts[1];
 
