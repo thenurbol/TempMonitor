@@ -137,7 +137,7 @@ public final class QueryUtils {
         if (TextUtils.isEmpty(temperatureJSON)) {
             return null;
         }
-        // Create an empty ArrayList that we can start adding earthquakes to
+        // Create an empty ArrayList that we can start adding temperatures to
         List<Temperature> temperatures = new ArrayList<>();
         // Try to parse the JSON response string. If there's a problem with the way the JSON
         // is formatted, a JSONException exception object will be thrown.
