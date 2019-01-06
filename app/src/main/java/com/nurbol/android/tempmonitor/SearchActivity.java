@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.android.volley.Request;
@@ -26,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+    Button goButton;
+    EditText roomEditText;
     private SwipeRefreshLayout mSwipeLayout;
     private RequestQueue mQueue;
     private TemperatureAdapter mAdapter;
@@ -46,6 +50,9 @@ public class SearchActivity extends AppCompatActivity implements SwipeRefreshLay
         mSwipeLayout.setColorSchemeResources(
                 R.color.blue_swipe, R.color.green_swipe,
                 R.color.orange_swipe, R.color.red_swipe);
+
+        goButton = (Button)findViewById(R.id.goButton);
+        roomEditText = (EditText)findViewById(R.id.roomEditText);
 
         ListView temperatureListView = (ListView) findViewById(R.id.list);
         // Create a new adapter that takes an empty list of temperatures as input
@@ -71,6 +78,23 @@ public class SearchActivity extends AppCompatActivity implements SwipeRefreshLay
                 intent.putExtra("id", Integer.toString(sensorId));
                 intent.putExtra("room", sensorRoom);
                 startActivity(intent);
+            }
+        });
+
+        goButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String roomEdit = roomEditText.getText().toString();
+                for (int i = 0; i < saveTemperatures.size(); i++){
+                    if (roomEdit.equals(saveTemperatures.get(i).getRoom())){
+                        Intent intent = new Intent(SearchActivity.this, DetailActivity.class);
+                        int sensorId = saveTemperatures.get(i).getId();
+                        String sensorRoom = saveTemperatures.get(i).getRoom();
+                        intent.putExtra("id", Integer.toString(sensorId));
+                        intent.putExtra("room", sensorRoom);
+                        startActivity(intent);
+                    }
+                }
             }
         });
     }
