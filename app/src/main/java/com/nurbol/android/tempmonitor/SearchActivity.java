@@ -1,11 +1,14 @@
 package com.nurbol.android.tempmonitor;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.volley.Request;
@@ -27,8 +30,10 @@ public class SearchActivity extends AppCompatActivity implements SwipeRefreshLay
     private RequestQueue mQueue;
     private TemperatureAdapter mAdapter;
     private static final String LOG_TAG = SearchActivity.class.getName();
-    private static final String REQUEST_URL = "https://api.myjson.com/bins/pc7s0";
-    //       "http://192.168.137.1:8080/api/sensors/data/current";
+    private static final String REQUEST_URL =
+//            "https://api.myjson.com/bins/pc7s0";
+            "http://192.168.137.1:8080/api/sensors/data/current";
+    List<Temperature> saveTemperatures = new ArrayList<>();
 
 
     @Override
@@ -55,6 +60,19 @@ public class SearchActivity extends AppCompatActivity implements SwipeRefreshLay
         mQueue = Volley.newRequestQueue(this);
 
         jsonParse();
+
+        temperatureListView.setOnItemClickListener(new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Temperature posItems = saveTemperatures.get(position);
+                int sensorId = posItems.getId();
+                String sensorRoom = posItems.getRoom();
+                Intent intent = new Intent(SearchActivity.this, DetailActivity.class);
+                intent.putExtra("id", Integer.toString(sensorId));
+                intent.putExtra("room", sensorRoom);
+                startActivity(intent);
+            }
+        });
     }
 
     //Swipe refresher
@@ -64,6 +82,7 @@ public class SearchActivity extends AppCompatActivity implements SwipeRefreshLay
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                saveTemperatures.clear();
 
                 jsonParse();
 
@@ -91,15 +110,17 @@ public class SearchActivity extends AppCompatActivity implements SwipeRefreshLay
                                 String temp = sensorDataEntity.getString("temp");
                                 String hmdt = sensorDataEntity.getString("hmdt");
                                 String room = dataEntity.getString("room");
+                                int id = dataEntity.getInt("id");
                                 String date = sensorDataEntity.getString("date");
                                 String light = sensorDataEntity.getString("light");
 
-                                Temperature temperature = new Temperature(temp, hmdt, room, date, light);
+                                Temperature temperature = new Temperature(temp, hmdt, room, date, light, id);
                                 temperatures.add(temperature);
                             }
 
                             mAdapter.clear();
                             mAdapter.addAll(temperatures);
+                            saveTemperatures = temperatures;
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

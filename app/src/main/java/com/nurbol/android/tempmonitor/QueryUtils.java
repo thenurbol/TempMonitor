@@ -154,12 +154,13 @@ public final class QueryUtils {
                 String temp = sensorDataEntity.getString("temp");
                 String hmdt = sensorDataEntity.getString("hmdt");
                 String room = dataEntity.getString("room");
+                int id = dataEntity.getInt("id");
                 String date = sensorDataEntity.getString("date");
                 String light = sensorDataEntity.getString("light");
 
                 // Create a new {@link Temperature} object with the magnitude, location, time,
                 // and url from the JSON response.
-                Temperature temperature = new Temperature(temp, hmdt, room, date, light);
+                Temperature temperature = new Temperature(temp, hmdt, room, date, light, id);
 
                 // Add the new {@link Temperature} to the list of temperatures.
                 temperatures.add(temperature);

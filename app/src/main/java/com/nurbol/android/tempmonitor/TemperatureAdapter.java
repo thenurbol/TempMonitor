@@ -80,7 +80,7 @@ public class TemperatureAdapter extends ArrayAdapter<Temperature> {
         // Set the color on the temperatureDegree
         temperatureDegreeCircle.setColor(temperatureDegreeColor);
 /////////////////////////////////////////////////////////////////////////////////
-        String humidity = currentTemperature.getHumidity();
+/*        String humidity = currentTemperature.getHumidity();
 
 
         // Find the TextView with view ID
@@ -94,7 +94,7 @@ public class TemperatureAdapter extends ArrayAdapter<Temperature> {
         // Find the TextView with view ID
         TextView lightView = (TextView) listItemView.findViewById(R.id.light);
 
-        lightView.setText(light);
+        lightView.setText(light);*/
 ///////////////////////////////////////////////////////////////////////////////////////
         String roomNumber = currentTemperature.getRoom();
 

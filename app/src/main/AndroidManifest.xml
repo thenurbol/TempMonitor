@@ -39,7 +39,12 @@
                 android:value=".AdminUserActivity" />
         </activity>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".SignupActivity"></activity>
+        <activity android:name=".SignupActivity" />
+        <activity
+            android:name=".DetailActivity"
+            android:label="Details"
+            android:parentActivityName=".SearchActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
