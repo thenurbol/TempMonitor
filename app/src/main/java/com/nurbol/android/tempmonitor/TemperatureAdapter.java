@@ -16,8 +16,6 @@ import java.util.Date;
 
 public class TemperatureAdapter extends ArrayAdapter<Temperature> {
 
-    private static final String DATE_SEPARATOR = "T";
-
     public TemperatureAdapter(Activity context, ArrayList<Temperature> temperature) {
         super(context, 0, temperature);
     }
@@ -64,7 +62,6 @@ public class TemperatureAdapter extends ArrayAdapter<Temperature> {
         Temperature currentTemperature = getItem(position);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-        // Find the TextView with view ID temperatureDegree
         TextView temperatureDegreeView = (TextView) listItemView.findViewById(R.id.temperatureDegree);
         // Format the temperatureDegree
         String formattedTemperatureDegree = currentTemperature.getTemperature();
@@ -98,8 +95,6 @@ public class TemperatureAdapter extends ArrayAdapter<Temperature> {
 ///////////////////////////////////////////////////////////////////////////////////////
         String roomNumber = currentTemperature.getRoom();
 
-
-        // Find the TextView with view ID
         TextView roomNumberView = (TextView) listItemView.findViewById(R.id.roomNumber);
 
         roomNumberView.setText("Room " + roomNumber);
@@ -114,27 +109,15 @@ public class TemperatureAdapter extends ArrayAdapter<Temperature> {
             e.printStackTrace();
         }
 
-        SimpleDateFormat fmtOut = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-        String dateWithZone = fmtOut.format(dateReal);
-
-        String date;
-        String time;
-
-        String[] parts = dateWithZone.split(DATE_SEPARATOR);
-        date = parts[0];
-        time = parts[1];
-
-        String timeR = time.substring(0, 5);
-
-        // Find the TextView with view ID
+        SimpleDateFormat fmtOutDate = new SimpleDateFormat("dd.MM.yyyy");
+        String dateWithZone = fmtOutDate.format(dateReal);
         TextView dateView = (TextView) listItemView.findViewById(R.id.date);
+        dateView.setText(dateWithZone);
 
-        dateView.setText(date);
-
-        // Find the TextView with view ID
+        SimpleDateFormat fmtOutTime = new SimpleDateFormat("HH:mm");
+        String timeWithZone = fmtOutTime.format(dateReal);
         TextView timeView = (TextView) listItemView.findViewById(R.id.time);
-
-        timeView.setText(timeR);
+        timeView.setText(timeWithZone);
 
         // Return the list item view that is now showing the appropriate data
         return listItemView;
