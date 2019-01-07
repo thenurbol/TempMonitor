@@ -7,11 +7,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,15 +31,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
-    Button goButton;
-    EditText roomEditText;
+    Button goButton, filterButton;
+    EditText roomEditText, firstTempEditText, secondTempEditText;
     private SwipeRefreshLayout mSwipeLayout;
     private RequestQueue mQueue;
     private TemperatureAdapter mAdapter;
     private static final String LOG_TAG = SearchActivity.class.getName();
     private static final String REQUEST_URL =
             "https://api.myjson.com/bins/pc7s0";
-//            "http://192.168.137.1:8080/api/sensors/data/current";
+    //            "http://192.168.137.1:8080/api/sensors/data/current";
     List<Temperature> saveTemperatures = new ArrayList<>();
 
 
@@ -51,8 +54,11 @@ public class SearchActivity extends AppCompatActivity implements SwipeRefreshLay
                 R.color.blue_swipe, R.color.green_swipe,
                 R.color.orange_swipe, R.color.red_swipe);
 
-        goButton = (Button)findViewById(R.id.goButton);
-        roomEditText = (EditText)findViewById(R.id.roomEditText);
+        goButton = (Button) findViewById(R.id.goButton);
+        filterButton = (Button) findViewById(R.id.filterButton);
+        roomEditText = (EditText) findViewById(R.id.roomEditText);
+        firstTempEditText = (EditText) findViewById(R.id.firstTempEditText);
+        secondTempEditText = (EditText) findViewById(R.id.secondTempEditText);
 
         ListView temperatureListView = (ListView) findViewById(R.id.list);
         // Create a new adapter that takes an empty list of temperatures as input
@@ -85,8 +91,8 @@ public class SearchActivity extends AppCompatActivity implements SwipeRefreshLay
             @Override
             public void onClick(View view) {
                 String roomEdit = roomEditText.getText().toString();
-                for (int i = 0; i < saveTemperatures.size(); i++){
-                    if (roomEdit.equals(saveTemperatures.get(i).getRoom())){
+                for (int i = 0; i < saveTemperatures.size(); i++) {
+                    if (roomEdit.equals(saveTemperatures.get(i).getRoom())) {
                         Intent intent = new Intent(SearchActivity.this, DetailActivity.class);
                         int sensorId = saveTemperatures.get(i).getId();
                         String sensorRoom = saveTemperatures.get(i).getRoom();
@@ -97,6 +103,34 @@ public class SearchActivity extends AppCompatActivity implements SwipeRefreshLay
                 }
             }
         });
+
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String one = String.valueOf(firstTempEditText.getText());
+                String two = String.valueOf(secondTempEditText.getText());
+                if (!(one.equals("")) && !(two.equals(""))) {
+                    mAdapter.addAll(saveTemperatures);
+                    List<Temperature> temporary = new ArrayList<>();
+                    int first = Integer.parseInt(one);
+                    int second = Integer.parseInt(two);
+                    for (int i = 0; i < saveTemperatures.size(); i++) {
+                        if (Integer.parseInt(saveTemperatures.get(i).getTemperature()) >= first && Integer.parseInt(saveTemperatures.get(i).getTemperature()) <= second) {
+                            temporary.add(saveTemperatures.get(i));
+                        }
+                    }
+                    mAdapter.clear();
+                    mAdapter.addAll(temporary);
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Wrong request",
+                            Toast.LENGTH_SHORT);
+
+                    toast.show();
+                }
+            }
+        });
+
     }
 
     //Swipe refresher
@@ -157,6 +191,23 @@ public class SearchActivity extends AppCompatActivity implements SwipeRefreshLay
         });
 
         mQueue.add(request);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemThatWasClickedId = item.getItemId();
+        if (itemThatWasClickedId == R.id.action_search) {
+            Intent numbersIntent = new Intent(SearchActivity.this, WeatherActivity.class);
+            startActivity(numbersIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

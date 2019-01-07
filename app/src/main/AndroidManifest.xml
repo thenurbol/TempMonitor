@@ -52,6 +52,11 @@
             android:name=".DetailActivity"
             android:label="Details"
             android:parentActivityName=".SearchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WeatherActivity"
+            android:label="Weather"
+            android:parentActivityName=".SearchActivity"
             android:screenOrientation="portrait"></activity>
     </application>
 
