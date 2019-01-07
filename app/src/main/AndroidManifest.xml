@@ -38,8 +38,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".AdminUserActivity" />
         </activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".SignupActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:label="Login"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SignupActivity"
+            android:label="Sign up"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".DetailActivity"
             android:label="Details"

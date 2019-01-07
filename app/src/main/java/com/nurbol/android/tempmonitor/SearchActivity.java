@@ -35,8 +35,8 @@ public class SearchActivity extends AppCompatActivity implements SwipeRefreshLay
     private TemperatureAdapter mAdapter;
     private static final String LOG_TAG = SearchActivity.class.getName();
     private static final String REQUEST_URL =
-//            "https://api.myjson.com/bins/pc7s0";
-            "http://192.168.137.1:8080/api/sensors/data/current";
+            "https://api.myjson.com/bins/pc7s0";
+//            "http://192.168.137.1:8080/api/sensors/data/current";
     List<Temperature> saveTemperatures = new ArrayList<>();
 
 
